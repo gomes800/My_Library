@@ -39,6 +39,14 @@ public class User implements Serializable, UserDetails {
         createDate = LocalDateTime.now();
     }
 
+    public User(String name, String login, String password, UserRole role) {
+        this.name = name;
+        this.login = login;
+        this.password =password;
+        this.role = role;
+
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
