@@ -1,7 +1,7 @@
 package com.gom.My_Library.services;
 
 import com.gom.My_Library.clients.OpenLibraryClient;
-import com.gom.My_Library.dto.OpenLibraryResponse;
+import com.gom.My_Library.models.dto.OpenLibraryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

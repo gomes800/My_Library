@@ -1,6 +1,6 @@
 package com.gom.My_Library.controllers;
 
-import com.gom.My_Library.dto.OpenLibraryResponse;
+import com.gom.My_Library.models.dto.OpenLibraryResponse;
 import com.gom.My_Library.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

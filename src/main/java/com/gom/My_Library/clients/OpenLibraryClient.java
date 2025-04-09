@@ -1,6 +1,6 @@
 package com.gom.My_Library.clients;
 
-import com.gom.My_Library.dto.OpenLibraryResponse;
+import com.gom.My_Library.models.dto.OpenLibraryResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

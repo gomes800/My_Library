@@ -1,4 +1,4 @@
-package com.gom.My_Library.dto;
+package com.gom.My_Library.models.dto;
 
 import lombok.Data;
 import java.util.List;
