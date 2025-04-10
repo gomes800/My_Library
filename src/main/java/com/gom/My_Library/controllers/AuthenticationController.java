@@ -1,7 +1,9 @@
 package com.gom.My_Library.controllers;
 
+import com.gom.My_Library.infra.security.TokenService;
 import com.gom.My_Library.models.User;
 import com.gom.My_Library.models.dto.AuthenticationDTO;
+import com.gom.My_Library.models.dto.LoginResponseDTO;
 import com.gom.My_Library.models.dto.RegisterDTO;
 import com.gom.My_Library.repositories.UserRepository;
 import jakarta.validation.Valid;
@@ -25,6 +27,9 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
         if (this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
@@ -42,6 +47,8 @@ public class AuthenticationController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }
