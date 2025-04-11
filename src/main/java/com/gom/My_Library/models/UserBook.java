@@ -25,7 +25,7 @@ public class UserBook implements Serializable {
     private String isbn;
     private String bookName;
     private String author;
-    private LocalDateTime publishedDate;
+    private Integer publishedDate;
     private double rating;
     private String description;
 
