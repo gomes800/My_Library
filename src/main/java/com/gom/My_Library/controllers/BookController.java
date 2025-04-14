@@ -9,22 +9,29 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController()
+@RequestMapping("/books")
 public class BookController {
 
     @Autowired
     private BookService bookService;
 
-    @GetMapping("/books")
+    @GetMapping("/search")
     public List<OpenLibraryResponse.BookDoc> searchBooks(
             @RequestParam String query,
             @RequestParam(defaultValue = "8") int limit) {
         return bookService.searchBooks(query, limit);
     }
 
-    @PostMapping("/books/save")
+    @PostMapping("/save")
     public ResponseEntity<Void> saveBook(@RequestBody SaveBookDTO dto) {
         bookService.saveBookForUser(dto);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete/{bookId}")
+    public ResponseEntity<Void> deleteUserBook(@PathVariable Long bookId) {
+        bookService.deleteBook(bookId);
+        return ResponseEntity.noContent().build();
     }
 }
