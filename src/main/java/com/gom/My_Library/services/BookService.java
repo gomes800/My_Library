@@ -40,7 +40,7 @@ public class BookService {
         UserBook userBook = new UserBook();
         userBook.setUser(user);
         userBook.setBookName(dto.getTitle());
-        userBook.setAuthor(dto.getAuthor() != null ? dto.getAuthor() : "Desconhecido");
+        userBook.setAuthor(dto.getAuthor() != null ? dto.getAuthor() : "Unknow");
         userBook.setPublishedDate(dto.getPublishedDate());
         userBook.setIsbn(dto.getIsbn() != null ? dto.getIsbn() : "N/A");
 
@@ -54,7 +54,7 @@ public class BookService {
         UserBook bookToDelete = user.getBookList().stream()
                 .filter(book -> book.getId().equals(bookId))
                 .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Livro não encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Book not found."));
         user.getBookList().remove(bookToDelete);
         userBookRepository.delete(bookToDelete);
     }

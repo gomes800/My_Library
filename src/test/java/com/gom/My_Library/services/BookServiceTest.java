@@ -1,22 +1,26 @@
 package com.gom.My_Library.services;
 
 import com.gom.My_Library.clients.OpenLibraryClient;
+import com.gom.My_Library.models.User;
+import com.gom.My_Library.models.UserBook;
 import com.gom.My_Library.models.dto.OpenLibraryResponse;
 import com.gom.My_Library.repositories.UserBookRepository;
 import com.gom.My_Library.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
+import javax.swing.text.html.parser.Entity;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class ServiceTest {
+public class BookServiceTest {
 
     @InjectMocks
     private BookService bookService;
@@ -64,5 +68,41 @@ public class ServiceTest {
         assertEquals("Livro teste 2", result.get(1).getTitle(), "Second book title is incorrect.");
 
         verify(openLibraryClient, times(1)).searchBooks("teste");
+    }
+
+    @Test
+    public void mustExcludeBook() {
+        Long bookId = 1L;
+        User mockUser = new User();
+        UserBook bookToDelete = new UserBook();
+        bookToDelete.setId(bookId);
+
+        List<UserBook> bookList = new ArrayList<>();
+        bookList.add(bookToDelete);
+        mockUser.setBookList(bookList);
+
+        when(userService.getAuthenticatedUser()).thenReturn(mockUser);
+
+        bookService.deleteBook(bookId);
+
+        assertTrue(mockUser.getBookList().isEmpty(), "The list should be empty.");
+        verify(userBookRepository, times(1)).delete(bookToDelete);
+    }
+
+    @Test
+    public void mustThrowExceptionWhenBookNotFound() {
+        Long bookId = 999L;
+        User mockUser = new User();
+        mockUser.setBookList(new ArrayList<>());
+
+        when(userService.getAuthenticatedUser()).thenReturn(mockUser);
+
+        EntityNotFoundException exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> bookService.deleteBook(bookId),
+                "Should throw EntityNotFoundException."
+        );
+
+        assertEquals("Book not found.", exception.getMessage());
     }
 }
